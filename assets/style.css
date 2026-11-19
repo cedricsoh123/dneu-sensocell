@@ -61,3 +61,76 @@
   width: min(100%, 385px);
   height: auto;
 }
+
+/* Lead with the product photography and give the bundle its own section. */
+.hero {
+  grid-template-columns: 1fr 1.12fr;
+  gap: clamp(30px, 5vw, 76px);
+  padding-block: 28px clamp(44px, 7vw, 100px);
+}
+.hero-product {
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.hero-product img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.routine-intro h2 { max-width: 14ch; }
+.makeup-scene {
+  position: relative;
+  margin: 24px 0 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.makeup-scene img {
+  position: absolute;
+  top: -46%;
+  left: 0;
+  width: 170%;
+  max-width: none;
+  height: auto;
+}
+.routine-photo { margin-block: 24px; }
+.split ol { padding-inline-start: 24px; }
+.split li + li { margin-top: 8px; }
+.shop .featured {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #efe1ce;
+  border: 1px solid #c6a57a;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.bundle-visual {
+  display: grid;
+  grid-template-columns: minmax(65px, .65fr) 1fr;
+  align-items: center;
+  gap: clamp(12px, 3vw, 38px);
+  padding: clamp(18px, 4vw, 44px);
+  background: #e9dac7;
+}
+.bundle-visual img {
+  width: 100%;
+  max-height: 235px;
+  height: auto;
+  object-fit: contain;
+}
+.bundle-contents { margin: 0; padding: 0; list-style: none; line-height: 1.35; }
+.bundle-contents li + li { margin-top: 16px; }
+.bundle-contents small { display: block; color: var(--muted); }
+.bundle-details { align-self: center; padding: clamp(22px, 5vw, 55px); }
+.bundle-details h3 { font-size: clamp(1.55rem, 4vw, 2.65rem); }
+.bundle-details .price { display: block; margin: 0 0 14px; padding: 0; }
+.offers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 730px) {
+  .hero, .shop .featured, .offers { grid-template-columns: 1fr; }
+  .hero-product img { aspect-ratio: 4 / 3; object-fit: contain; }
+  .bundle-visual img { max-height: 175px; }
+}
