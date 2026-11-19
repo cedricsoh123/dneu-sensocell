@@ -3,6 +3,7 @@ const market = byId('market');
 const modal = byId('checkout');
 const form = byId('checkout-form');
 const status = byId('checkout-status');
+const quantityInput = byId('gel-quantity');
 const languageButton = byId('language');
 const localized = [...document.querySelectorAll('[data-zh]')].map(element => ({
   element, english: element.innerHTML
@@ -11,7 +12,7 @@ const localizedImages = [...document.querySelectorAll('[data-alt-zh]')].map(imag
   image, english: image.alt
 }));
 const catalogue = {
-  gel: { name: 'Pore Refining Gel', MY: 219, SG: 75 },
+  gel: { name: 'Pore Refining Gel', MY: 219, SG: 79 },
   bundle: { name: 'Pore Refining Gel + Nutrient Peptide Serum × 2', MY: 490, SG: 155 },
   serum: { name: 'Nutrient Peptide Serum × 2', MY: 299, SG: 99 }
 };
@@ -30,7 +31,8 @@ function syncMarket() {
   byId('delivery').textContent = singapore
     ? (chinese ? '预计 4–7 天送达 · 合资格地址可货到付款' : 'Estimated delivery: 4–7 days · COD for eligible addresses')
     : (chinese ? '预计 1–4 天送达' : 'Estimated delivery: 1–4 days');
-  byId('purchase-summary').textContent = catalogue[product].name + ' · ' + money(catalogue[product][market.value]);
+  const quantity = product === 'gel' ? Number(quantityInput.value) : 1;
+  byId('purchase-summary').textContent = catalogue[product].name + ' × ' + quantity + ' · ' + money(catalogue[product][market.value] * quantity);
   byId('cod').hidden = !singapore;
   form.elements.method[1].disabled = !singapore;
   if (!singapore) form.elements.method[0].checked = true;
@@ -59,6 +61,7 @@ function syncWhatsApp() {
 market.addEventListener('change', syncMarket);
 for (const button of document.querySelectorAll('.order')) {
   button.addEventListener('click', () => {
+    if (button.dataset.product === 'gel' && !quantityInput.reportValidity()) return;
     product = button.dataset.product;
     form.reset();
     status.textContent = '';
@@ -71,8 +74,8 @@ form.addEventListener('submit', event => {
   event.preventDefault();
   const method = new FormData(form).get('method');
   status.textContent = method === 'cod' && market.value === 'SG'
-    ? (chinese ? '新加坡货到付款流程已模拟。' : 'Singapore COD flow simulated.')
-    : (chinese ? '线上付款流程已模拟。' : 'Online payment flow simulated.');
+    ? (chinese ? '仅供预览，没有提交新加坡货到付款订单。' : 'Singapore COD preview only. No order was placed.')
+    : (chinese ? '仅供预览，没有扣款。' : 'Online payment preview only. No payment was taken.');
 });
 syncWhatsApp();
 syncMarket();
